@@ -15,12 +15,20 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "^/api/(.*)",
       "dest": "/api/server.js"
     },
     {
-      "src": "/(.*)",
+      "src": "^/(.*\\.(js|css|svg|ico|png|jpg|jpeg|mp3|json|webmanifest|woff2|woff|ttf))$",
       "dest": "/client/$1"
+    },
+    {
+      "src": "^/gallery/(.*)",
+      "dest": "/client/gallery/$1"
+    },
+    {
+      "src": "^/(.*)",
+      "dest": "/client/index.html"
     }
   ]
 }
