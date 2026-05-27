@@ -19,7 +19,23 @@ export default function HerView() {
   // Audio & Gateway state
   const [isPlaying, setIsPlaying] = useState(false);
   const [entered, setEntered] = useState(false);
+  const [typingDone, setTypingDone] = useState(false);
+  const [typingStage, setTypingStage] = useState(0);
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    if (!entered || typingDone) return;
+    
+    const t1 = setTimeout(() => setTypingStage(1), 1000);
+    const t2 = setTimeout(() => setTypingStage(2), 3500);
+    const t3 = setTimeout(() => setTypingStage(3), 6000);
+    const t4 = setTimeout(() => setTypingStage(4), 9500); // fade out
+    const t5 = setTimeout(() => setTypingDone(true), 11000); // go to main
+    
+    return () => {
+      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); clearTimeout(t5);
+    };
+  }, [entered, typingDone]);
 
   useEffect(() => {
     // Initialize audio
@@ -135,8 +151,26 @@ export default function HerView() {
     );
   }
 
+  if (entered && !typingDone) {
+    return (
+      <div className={`min-h-screen bg-[#fcfbf9] flex items-center justify-center p-6 transition-opacity duration-1000 ${typingStage >= 4 ? 'opacity-0' : 'opacity-100'}`}>
+        <div className="flex flex-col items-center space-y-8 text-[#555] font-light text-[17px] tracking-wide text-center">
+          <p className={`transition-all duration-1000 transform ${typingStage >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            Привет, котя...
+          </p>
+          <p className={`transition-all duration-1000 transform ${typingStage >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            Просто хотел сказать...
+          </p>
+          <p className={`transition-all duration-1000 transform ${typingStage >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            Что очень тебя люблю! ❤️
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#fcfbf9] text-[#333] flex flex-col items-center p-6 relative">
+    <div className="min-h-screen bg-[#fcfbf9] text-[#333] flex flex-col items-center p-6 relative animate-fade-in">
       <div className="max-w-md w-full mt-12 mb-8 space-y-4 text-[#555] font-light text-sm text-center tracking-wide">
         <p>Я понимаю, что ты хочешь побыть одна.</p>
         <p>Но я все равно беспокоюсь и хочу узнать как ты себя чувствуешь.</p>
