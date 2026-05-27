@@ -47,9 +47,9 @@ export default function HerView() {
     fetchEntries();
     
     // Notify admin silently that she opened the page
-    fetch('http://localhost:3000/api/notify-visit', { method: 'POST' }).catch(() => {});
+    fetch('/api/notify-visit', { method: 'POST' }).catch(() => {});
     
-    const sse = new EventSource('http://localhost:3000/api/events');
+    const sse = new EventSource('/api/events');
     sse.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.type === 'HEART') {
@@ -88,7 +88,7 @@ export default function HerView() {
 
   const fetchEntries = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/entries');
+      const res = await fetch('/api/entries');
       if (res.ok) {
         const data = await res.json();
         setEntries(data);
@@ -103,7 +103,7 @@ export default function HerView() {
     if (!content.trim()) return;
     
     try {
-      const res = await fetch('http://localhost:3000/api/entries', {
+      const res = await fetch('/api/entries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content })

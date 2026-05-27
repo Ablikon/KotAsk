@@ -14,7 +14,7 @@ export default function HisView() {
 
   const fetchEntries = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/entries');
+      const res = await fetch('/api/entries');
       if (res.ok) {
         const data = await res.json();
         setEntries(data);
@@ -24,7 +24,7 @@ export default function HisView() {
 
   const markSeen = async (id) => {
     try {
-      await fetch('http://localhost:3000/api/seen', {
+      await fetch('/api/seen', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id })
@@ -35,7 +35,7 @@ export default function HisView() {
 
   const toggleWarmth = async (id, currentStatus) => {
     try {
-      await fetch('http://localhost:3000/api/warmth', {
+      await fetch('/api/warmth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, warmth_status: !currentStatus })
@@ -46,7 +46,7 @@ export default function HisView() {
 
   const saveComment = async (id) => {
     try {
-      await fetch('http://localhost:3000/api/comment', {
+      await fetch('/api/comment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, admin_comment: commentInput[id] || '' })
@@ -59,7 +59,7 @@ export default function HisView() {
   const deleteEntry = async (id) => {
     if (!window.confirm("Точно удалить?")) return;
     try {
-      await fetch(`http://localhost:3000/api/entries/${id}`, {
+      await fetch(`/api/entries/${id}`, {
         method: 'DELETE'
       });
       fetchEntries();
@@ -68,13 +68,13 @@ export default function HisView() {
 
   const sendHeart = async () => {
     try {
-      await fetch('http://localhost:3000/api/heart', { method: 'POST' });
+      await fetch('/api/heart', { method: 'POST' });
     } catch (err) {}
   };
 
   const sendPhoto = async () => {
     try {
-      await fetch('http://localhost:3000/api/photo', { method: 'POST' });
+      await fetch('/api/photo', { method: 'POST' });
     } catch (err) {}
   };
 
